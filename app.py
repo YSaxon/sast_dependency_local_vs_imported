@@ -4,16 +4,21 @@ import sqlite3
 import subprocess
 from flask import Flask
 import sqlalchemy
-flask_app = Flask(__name__)
+app = Flask(__name__)
 
 import shlex
-@flask_app.route("/cmd1/<cmd>")
+@app.route("/cmd1/<cmd>")
 def cmd_flask_imported_shlex(cmd):
-    os.system(shlex.split(cmd))
+    output=subprocess.check_output(shlex.split(cmd))
+    return html.escape(output.decode())
 
-@flask_app.route("/cmd2/<cmd>")
+@app.route("/cmd2/<cmd>")
 def cmd_flask_local_shlex(cmd):
-    os.system(shlex_local.split(cmd))
+   output=subprocess.check_output(shlex_local.split(cmd))
+   return html.escape(output.decode())
+    
+if __name__ == '__main__':
+    app.run()
 
 """A lexical analyzer class for simple shell-like syntaxes."""
 
