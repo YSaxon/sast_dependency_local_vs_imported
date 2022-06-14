@@ -6,7 +6,7 @@ from flask import Flask
 import sqlalchemy
 app = Flask(__name__)
 
-@app.route("/cmd1/<cmd>")
+@app.route("/cmd0/<cmd>")
 def cmd_flask_imported(cmd):
     output=subprocess.check_output([cmd])
     return html.escape(output.decode())
