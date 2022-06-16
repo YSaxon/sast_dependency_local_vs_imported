@@ -10,6 +10,8 @@ def cmd_flask_nobrackets1(c1):
 @app.route("/cmd02/<c1>")
 def cmd_flask_brackets1(c1):
     output=subprocess.check_output([c1]) #false negative
+    subprocess.run([c1]) #just trying different variations..
+    subprocess.Popen([c1]) #all of which are false negative..
     return output.decode()
 
 import shlex
@@ -24,10 +26,11 @@ def cmd_flask_inbrackets3(c1,c2,c3):
     output=subprocess.check_output([c1,c2,c3])# false negative
     return output.decode()
 
-@app.route("/cmd05/<c1>/<c2>/<c3>")
-def cmd_flask_nobrackets3(c1,c2,c3):
-    output=subprocess.check_output(c1,c2,c3) #false positive of sorts, since this doesn't actually work
-    return output.decode()
+@app.route("/cmd06/<c1>/<c2>/<c3>")
+def cmd_flask_nobrackets3_static_first(c1,c2,c3):
+    output=subprocess.check_output("foo",c1,c2,c3) #true negative, since this doesnt work
+    return output.decode()#but interesting in showing that it only cares about the first param
+
 
 @app.route("/cmd06/<c1>/<c2>/<c3>") #one last bonus
 def cmd_flask_varargs(**cmd):  #does snyk not support kwargs?
